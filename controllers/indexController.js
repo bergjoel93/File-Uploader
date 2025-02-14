@@ -5,18 +5,33 @@
 function getIndex(req, res) {
   if (req.isAuthenticated()) {
     // redirect authenticated users to dashboard.
-    return res.render("/layout", {
-      title: "Dashboard",
-      navbar: true,
-      sidebar: false,
-      body: "./pages/dashboard",
-    });
+    return res.redirect(`/dashboard`);
   }
 
   // Render login page for unauthenticated users
-  res.render("login", { errors: [], message: [] });
+  return res.render("layout", {
+    title: "login",
+    navbar: true,
+    sidebar: false,
+    body: "pages/login",
+    errors: [],
+    message: [],
+  });
+}
+
+function getLogout(req, res, next) {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+
+    req.session.destroy(() => {
+      return res.redirect("/"); // Redirect to login page
+    });
+  });
 }
 
 module.exports = {
   getIndex,
+  getLogout,
 };

@@ -1,7 +1,9 @@
 // controllers/registerController.js
 const { validationResult } = require("express-validator");
 const userQuery = require("../db/queries/user");
+const folderQuery = require("../db/queries/folder");
 const { genPassword } = require("../authentication/passwordUtils");
+
 // Get
 function getRegister(req, res) {
   res.render("register", { errors: [] });
@@ -28,19 +30,23 @@ async function postRegister(req, res) {
     const salt = saltHash.salt;
     const hash = saltHash.hash;
 
-    // 2. Add new user into the database
-    //  addUser(username, fulle_name, salt, hash,)
+    // 2. format fullName
     const fullName =
       capitalizeFirst(first_name) + " " + capitalizeFirst(last_name);
-    await userQuery.createUser(username, fullName, salt, hash);
-    //console.log("New User: ", username, " was just added.");
 
-    // 3. redirect
-    res.render("login", {
-      message: "Congrats! You've made an account!",
-      errors: [],
-      user: req.user,
-    });
+    // 3. Add new user into the database & get the user ID
+    const newUser = await userQuery.createUser(username, fullName, salt, hash);
+    console.log("New User Registered:", newUser.username);
+
+    // 4. Automatically create a root folder for the new user
+    //const existingRootFolder = await folderQuery.findRootFolder(newUser.id);
+
+    await folderQuery.createRootFolder(newUser.id);
+    console.log(`✅ Root folder created for user: ${newUser.username}`);
+
+    // 5. redirect
+    req.flash("message", "Account created successfully! Please log in.");
+    res.redirect("/login"); // Redirects with flash message
   } catch (err) {
     console.error("Error during registration:", err);
     res

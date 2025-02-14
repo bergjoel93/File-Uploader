@@ -48,6 +48,7 @@ app.use(flash());
 // Pass flash messages to all views
 app.use((req, res, next) => {
   res.locals.errorMessages = req.flash("error"); // Attach error messages to locals
+  res.locals.messages = req.flash("message");
   next();
 });
 
@@ -61,8 +62,16 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  res.locals.user = req.user || null; // Attach user to res.locals for all views
+  next();
+});
+
 // Use the indexRouter for root-level routes
 app.use("/", router);
+
+// To access uploaded files
+app.use("/uploads", express.static("uploads"));
 
 app.listen(PORT, () => {
   console.log("Server running on port 3000");

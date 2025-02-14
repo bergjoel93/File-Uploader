@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-  </head>
-  <body>
-    <h1>Welcome to the dashboard.</h1>
-  </body>
-</html>
+<!-- views/pages/dashboard.ejs -->
+<div class="main-file-container">
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <% breadcrumbs.forEach((crumb, index) => { %> <% if (index !==
+    breadcrumbs.length - 1) { %>
+    <a href="/dashboard/folder/<%= crumb.folderId %>"><%= crumb.name %></a> / <%
+    } else { %>
+    <span><%= crumb.name %></span>
+    <% } %> <% }) %>
+  </div>
+
+  <!-- Table Headers -->
+  <div class="file-header">
+    <div class="file-header-name">Name</div>
+    <div class="file-header-date">Date Made</div>
+  </div>
+
+  <% if (type === "folder") { %> <%- include('folder') %> <% } %> <% if (type
+  === "file") { %> <%- include('file') %> <% } %>
+</div>

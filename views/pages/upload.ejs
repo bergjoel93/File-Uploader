@@ -1,0 +1,13 @@
+<form
+  action="/upload/<%= folderId %>"
+  method="post"
+  enctype="multipart/form-data"
+>
+  <p>You are uploading files to <%= folderName %> folder.</p>
+
+  <div class="input-container">
+    <label for="uploadedFile">Upload File:</label>
+    <input type="file" id="uploadedFile" name="uploadedFile" multiple />
+  </div>
+  <button type="submit">Add to folder!</button>
+</form>

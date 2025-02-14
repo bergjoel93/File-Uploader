@@ -1,0 +1,35 @@
+<div class="file-container">
+  <% contents.forEach(item => { %>
+  <div class="file-item">
+    <% if (item.type === "folder") { %>
+    <a href="/dashboard/folder/<%= item.id %>" class="folder-link">
+      📁 <%= item.name %>
+    </a>
+    <% } else { %>
+    <a href="/<%= item.path %>" class="file-link" target="_blank">
+      📄 <%= item.name %>
+    </a>
+    <!-- Delete File Button -->
+    <form
+      action="/file/delete/<%= item.id %>"
+      method="post"
+      style="display: inline"
+    >
+      <button type="submit">🗑️ Delete</button>
+    </form>
+    <% } %>
+    <span class="file-date"
+      ><%= new Date(item.createdAt).toLocaleDateString() %></span
+    >
+  </div>
+  <% }); %>
+</div>
+
+<div class="add-buttons-container">
+  <div class="add-new-folder-button">
+    <a href="">Add New Folder</a>
+  </div>
+  <div class="upload-file-button">
+    <a href="/upload/<%= folderId %>">Upload File</a>
+  </div>
+</div>

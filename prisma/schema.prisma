@@ -20,6 +20,36 @@ model User {
   salt     String
   hash     String
   createdAt DateTime @default(now())
+  folders Folder[]
+}
+
+model Folder {
+  id         String   @id @default(uuid())
+  name       String
+  isRoot     Boolean  @default(false) // True if it's the root folder
+  userId     Int   // Link to the user
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  parentId   String?  // Nullable, means this can be a root folder
+  parent     Folder?  @relation("Subfolders", fields: [parentId], references: [id], onDelete: Cascade)
+
+  subfolders Folder[] @relation("Subfolders")
+
+  files      File[]
+  createdAt  DateTime @default(now())
+
+  @@unique([name, parentId]) // Prevents duplicate folder names in the same directory
+  //@@unique([userId, isRoot]) // Ensures only ONE root folder per user
+}
+
+
+model File {
+  id        String  @id @default(uuid())
+  name      String
+  url       String  // Cloud storage URL (e.g., Cloudinary)
+  folderId  String? // Nullable in case a file is in "root"
+  folder    Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade) // TODO potential issue. rootFolder has an id and this should be refererenced. 
+  createdAt DateTime @default(now())
 }
 
 model Session {
