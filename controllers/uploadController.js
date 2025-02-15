@@ -1,25 +1,14 @@
+// controllers/uploadController.js
 const folderQuery = require("../db/queries/folder");
 const fileQuery = require("../db/queries/file");
-const multer = require("multer");
 const path = require("path");
-// Configure where to store uploaded files
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Files will be saved in "uploads" directory
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname); // unique filename
-  },
-});
 
-const upload = multer({ storage });
+const { UPLOADS_DIR } = require("../config/storageConfig");
 
 ///// Get
 async function getUpload(req, res) {
-  const folderId = req.params.folderId;
-  console.log("Folder ID", folderId);
-
   try {
+    const folderId = req.params.folderId;
     const folderContents = await folderQuery.getFolderContents(folderId);
     return res.render("layout", {
       title: "Upload a file",
@@ -44,14 +33,21 @@ async function postUpload(req, res) {
   }
 
   try {
+    // Extrac names from uploaded file
+    const name = req.file.originalname; // User-facing name
+    const fileName = req.file.filename; // unique stored filename
+
+    // Construct the file path dynamically using the centralized UPLOADS_DIR
+    const filePath = path.join(UPLOADS_DIR, fileName);
     // Save file metadata to the database using fileQueries
     const newFile = await fileQuery.createFile(
-      req.file.filename,
-      `uploads/${req.file.filename}`,
+      name,
+      fileName,
+      filePath,
       folderId
     );
+    console.log("File uploaded:", newFile);
 
-    console.log("File uploaded:", req.file);
     if (folderContents.isRoot) {
       return res.redirect("/dashboard");
     } else {
@@ -63,4 +59,4 @@ async function postUpload(req, res) {
   }
 }
 
-module.exports = { getUpload, postUpload, upload };
+module.exports = { getUpload, postUpload };

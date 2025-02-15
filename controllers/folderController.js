@@ -9,7 +9,7 @@ async function getFolder(req, res) {
     const folderContents = await folderQuery.getFolderContents(folderId);
     // Fetch files in the folder
     const files = await fileQuery.getFilesInFolder(folderId);
-    console.log("Folder Contents: ", folderContents);
+    //console.log("Folder Contents: ", folderContents);
     res.render("layout", {
       title: folderContents.folderName,
       navbar: true,

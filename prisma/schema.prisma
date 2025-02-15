@@ -45,10 +45,11 @@ model Folder {
 
 model File {
   id        String  @id @default(uuid())
-  name      String
+  name      String  // user-facing name, can be altered
+  fileName  String  // Stored filename with timestamp
   url       String  // Cloud storage URL (e.g., Cloudinary)
-  folderId  String? // Nullable in case a file is in "root"
-  folder    Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade) // TODO potential issue. rootFolder has an id and this should be refererenced. 
+  folderId  String // Nullable in case a file is in "root"
+  folder    Folder @relation(fields: [folderId], references: [id], onDelete: Cascade) 
   createdAt DateTime @default(now())
 }
 

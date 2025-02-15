@@ -1,6 +1,7 @@
+// db/queries/file.js
 const prisma = require("../prisma");
 
-class FileQueries {
+class FileQuery {
   /**
    * Save a new file to the database.
    * @param {string} name - The filename.
@@ -8,11 +9,12 @@ class FileQueries {
    * @param {number} folderId - The folder the file belongs to.
    * @returns {Promise<object>} - The created file record.
    */
-  async createFile(name, url, folderId) {
+  async createFile(name, fileName, url, folderId) {
     try {
       return await prisma.file.create({
         data: {
           name,
+          fileName,
           url,
           folderId,
         },
@@ -58,6 +60,23 @@ class FileQueries {
       throw new Error("Failed to delete file.");
     }
   }
+
+  async getFileById(fileId) {
+    try {
+      const file = await prisma.file.findUnique({
+        where: { id: fileId },
+      });
+
+      if (!file) {
+        throw new Error("File not found");
+      }
+
+      return file;
+    } catch (error) {
+      console.error("Error fetching file:", error);
+      throw error; // Rethrow the error for handling in controllers
+    }
+  }
 }
 
-module.exports = new FileQueries();
+module.exports = new FileQuery();

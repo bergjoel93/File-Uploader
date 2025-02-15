@@ -12,15 +12,19 @@ const {
 
 const { getDashboard } = require("../controllers/dashboardController");
 const { postLogin } = require("../controllers/loginController");
-const {
-  getUpload,
-  postUpload,
-  upload,
-} = require("../controllers/uploadController");
+const { getUpload, postUpload } = require("../controllers/uploadController");
+const { upload } = require("../config/storageConfig");
 const { getFolder } = require("../controllers/folderController");
 
 const { validateRegistration } = require("../validators/registrationValidator");
 const { validateLogin } = require("../validators/loginValidation");
+
+const {
+  deleteFile,
+  moveFile,
+  renameFile,
+  downloadFile,
+} = require("../controllers/fileController");
 
 ////////// GET ROUTES //////////////
 
@@ -35,14 +39,17 @@ router.get("/upload/:folderId", isAuth, getUpload);
 router.get("/dashboard/folder/:folderId", isAuth, getFolder);
 //router.get("/dashboard/file/:fileId")
 
-////////// POST ROUTES //////////////
-router.post("/register", validateRegistration, postRegister);
-router.post("/login", validateLogin, postLogin);
+// POST ROUTES FOR FILES/FOLDERS
 router.post(
   "/upload/:folderId",
   isAuth,
   upload.single("uploadedFile"),
   postUpload
 );
+router.post("/file/delete/:fileId", isAuth, deleteFile);
+
+////////// POST ROUTES //////////////
+router.post("/register", validateRegistration, postRegister);
+router.post("/login", validateLogin, postLogin);
 
 module.exports = router;
