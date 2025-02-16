@@ -199,6 +199,45 @@ class FolderQueries {
     }
   }
 
+  async createFolder(folderName, parentFolderId, userId) {
+    try {
+      // 1️⃣ Validate that the parent folder exists
+      const parentFolder = await prisma.folder.findUnique({
+        where: { id: parentFolderId },
+      });
+
+      if (!parentFolder) {
+        throw new Error("Parent folder not found.");
+      }
+
+      // 2️⃣ Check if a folder with the same name already exists under this parent
+      const existingFolder = await prisma.folder.findFirst({
+        where: { name: folderName, parentId: parentFolderId },
+      });
+
+      if (existingFolder) {
+        throw new Error(
+          "A folder with this name already exists in this location."
+        );
+      }
+
+      // 3️⃣ Create the new folder under the specified parent
+      const newFolder = await prisma.folder.create({
+        data: {
+          name: folderName,
+          isRoot: false, // Since it's a subfolder
+          userId: userId,
+          parentId: parentFolderId, // Associate with parent folder
+        },
+      });
+
+      return newFolder;
+    } catch (error) {
+      console.error("Error creating folder:", error);
+      throw new Error("Failed to create folder.");
+    }
+  }
+
   /**
    * Recursively builds the breadcrumbs array by tracing parent folders.
    * Starts from the given folder and moves up to the root.

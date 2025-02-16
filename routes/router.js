@@ -3,19 +3,22 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const { isAuth, isAdmin } = require("../authentication/authMiddleware");
-
+// Controllers
 const { getIndex, getLogout } = require("../controllers/indexController");
 const {
   getRegister,
   postRegister,
 } = require("../controllers/registerController");
-
 const { getDashboard } = require("../controllers/dashboardController");
 const { postLogin } = require("../controllers/loginController");
 const { getUpload, postUpload } = require("../controllers/uploadController");
-const { upload } = require("../config/storageConfig");
-const { getFolder } = require("../controllers/folderController");
+const {
+  getFolder,
+  createFolder,
+  getNewFolder,
+} = require("../controllers/folderController");
 
+const { upload } = require("../config/storageConfig");
 const { validateRegistration } = require("../validators/registrationValidator");
 const { validateLogin } = require("../validators/loginValidation");
 
@@ -37,6 +40,7 @@ router.get("/upload/:folderId", isAuth, getUpload);
 
 ////////// GET ROUTES FOR FILES/FOLDERS ////////////
 router.get("/dashboard/folder/:folderId", isAuth, getFolder);
+router.get("/newFolder/:parentFolderId", isAuth, getNewFolder);
 //router.get("/dashboard/file/:fileId")
 
 // POST ROUTES FOR FILES/FOLDERS
@@ -47,6 +51,8 @@ router.post(
   postUpload
 );
 router.post("/file/delete/:fileId", isAuth, deleteFile);
+
+router.post("/newFolder/:parentFolderId", isAuth, createFolder);
 
 ////////// POST ROUTES //////////////
 router.post("/register", validateRegistration, postRegister);
