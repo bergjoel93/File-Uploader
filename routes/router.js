@@ -16,6 +16,8 @@ const {
   getFolder,
   createFolder,
   getNewFolder,
+  deleteFolder,
+  deleteFolderHandler,
 } = require("../controllers/folderController");
 
 const { upload } = require("../config/storageConfig");
@@ -23,6 +25,7 @@ const { validateRegistration } = require("../validators/registrationValidator");
 const { validateLogin } = require("../validators/loginValidation");
 
 const {
+  getFile,
   deleteFile,
   moveFile,
   renameFile,
@@ -42,6 +45,9 @@ router.get("/upload/:folderId", isAuth, getUpload);
 router.get("/dashboard/folder/:folderId", isAuth, getFolder);
 router.get("/newFolder/:parentFolderId", isAuth, getNewFolder);
 //router.get("/dashboard/file/:fileId")
+router.get("/folder/delete/:folderId", isAuth, deleteFolder);
+router.get("/file/:fileId", isAuth, getFile);
+router.get("/file/download/:fileId", isAuth, downloadFile);
 
 // POST ROUTES FOR FILES/FOLDERS
 router.post(
@@ -51,8 +57,8 @@ router.post(
   postUpload
 );
 router.post("/file/delete/:fileId", isAuth, deleteFile);
-
 router.post("/newFolder/:parentFolderId", isAuth, createFolder);
+router.post("/folder/delete/:folderId", isAuth, deleteFolderHandler);
 
 ////////// POST ROUTES //////////////
 router.post("/register", validateRegistration, postRegister);

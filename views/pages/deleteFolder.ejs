@@ -1,0 +1,24 @@
+<h1>Confirm Folder Deletion</h1>
+
+<p>
+  Are you sure you want to delete "<strong><%= folder.folderName %></strong>"?
+</p>
+
+<p>
+  The following <strong><%= folder.contents.length %></strong> item(s) will be
+  deleted if you proceed:
+</p>
+
+<ul>
+  <% folder.contents.forEach(item => { %>
+  <li>
+    <strong><%= item.name %></strong>
+    (<%= item.type === "folder" ? "Folder" : "File" %>)
+  </li>
+  <% }); %>
+</ul>
+
+<form action="/folder/delete/<%= folder.folderId %>" method="POST">
+  <button type="submit">Yes, Delete</button>
+  <a href="/dashboard/folder/<%= folderId %>">Cancel</a>
+</form>

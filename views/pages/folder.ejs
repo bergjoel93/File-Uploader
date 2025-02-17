@@ -5,10 +5,15 @@
     <a href="/dashboard/folder/<%= item.id %>" class="folder-link">
       📁 <%= item.name %>
     </a>
+    <form
+      action="/folder/delete/<%= item.id %>"
+      method="get"
+      style="display: inline"
+    >
+      <button type="submit">🗑️ Delete</button>
+    </form>
     <% } else { %>
-    <a href="/<%= item.path %>" class="file-link" target="_blank">
-      📄 <%= item.name %>
-    </a>
+    <a href="/file/<%= item.id %>" class="file-link"> 📄 <%= item.name %> </a>
     <!-- Delete File Button -->
     <form
       action="/file/delete/<%= item.id %>"

@@ -10,8 +10,8 @@ async function getNewFolder(req, res) {
 
     return res.render("layout", {
       title: "New Folder",
-      navbar: false,
-      sidebar: true,
+      navbar: true,
+      sidebar: false,
       body: "pages/newFolder",
       parentFolderId,
       parentFolderName: parentFolder.folderName,
@@ -60,7 +60,7 @@ async function getFolder(req, res) {
     res.render("layout", {
       title: folderContents.folderName,
       navbar: true,
-      sidebar: true,
+      sidebar: false,
       body: "pages/dashboard",
       type: "folder",
       contents: folderContents.contents,
@@ -82,4 +82,54 @@ async function getFolder(req, res) {
   }
 }
 
-module.exports = { getFolder, createFolder, getNewFolder };
+async function deleteFolder(req, res) {
+  try {
+    const folderId = req.params.folderId;
+    const folder = await folderQuery.getFolderContents(folderId);
+    const itemCount = folder.contents.length;
+
+    return res.render("layout", {
+      title: "Confirm Folder Deletion",
+      navbar: false,
+      sidebar: true,
+      body: "pages/deleteFolder",
+      folderId,
+      folderName: folder.folderName,
+      folder,
+      itemCount,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res
+      .status(500)
+      .json({ message: error.message || "Internal server error" });
+  }
+}
+
+async function deleteFolderHandler(req, res) {
+  try {
+    const folderId = req.params.folderId;
+
+    // Ensure the folder exists before deletion
+    const folder = await folderQuery.getFolderContents(folderId);
+    if (!folder) {
+      return res.status(404).send("Folder not found.");
+    }
+
+    // Delete folder and all its contents
+    await folderQuery.deleteFolder(folderId);
+
+    return res.redirect("/dashboard"); // Redirect back to dashboard after deletion
+  } catch (error) {
+    console.error("Error deleting folder:", error);
+    return res.status(500).send("Failed to delete folder.");
+  }
+}
+
+module.exports = {
+  getFolder,
+  createFolder,
+  getNewFolder,
+  deleteFolder,
+  deleteFolderHandler,
+};

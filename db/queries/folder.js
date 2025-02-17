@@ -257,11 +257,6 @@ class FolderQueries {
       });
     }
 
-    // Ensure the first breadcrumb is always "Root"
-    if (!breadcrumbs.find((b) => b.folderId === null)) {
-      breadcrumbs.unshift({ name: "Root", folderId: null });
-    }
-
     return breadcrumbs;
   }
 }

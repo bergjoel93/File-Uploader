@@ -1,0 +1,24 @@
+
+    <p>
+      <% breadcrumbs.forEach((crumb, index) => { %>
+        <% if (index > 0) { %> › <% } %>
+        <% if (crumb.folderId !== null) { %>
+          <a href="/dashboard/folder/<%= crumb.folderId %>"><%= crumb.name %></a>
+        <% } else { %>
+          <a href="/dashboard">Root</a>
+        <% } %>
+      <% }); %>
+    </p>
+  </nav>
+
+  <h1><%= file.name %></h1>
+  <p>File URL: <a href="<%= file.url %>"><%= file.url %></a></p>
+  <p>File Type: <%= file.mimeType %></p>
+  <p>File Size: <%= file.fileSize %> bytes</p>
+
+  <a href="/file/download/<%= file.id %>" download>
+    <button>Download File</button>
+  </a>
+
+  <a href="/dashboard">Back to Dashboard</a>
+

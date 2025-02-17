@@ -10,7 +10,7 @@ async function getDashboard(req, res) {
     res.render("layout", {
       title: "Dashboard",
       navbar: true,
-      sidebar: true,
+      sidebar: false,
       body: "pages/dashboard",
       type: "folder",
       contents: rootContents.contents,

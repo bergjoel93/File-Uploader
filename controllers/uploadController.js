@@ -13,7 +13,7 @@ async function getUpload(req, res) {
     return res.render("layout", {
       title: "Upload a file",
       navbar: true,
-      sidebar: true,
+      sidebar: false,
       body: "pages/upload",
       folderId,
       folderName: folderContents.folderName,
