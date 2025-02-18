@@ -51,6 +51,7 @@ model File {
   folderId  String // Nullable in case a file is in "root"
   folder    Folder @relation(fields: [folderId], references: [id], onDelete: Cascade) 
   createdAt DateTime @default(now())
+  fileType String  // storing the MIME type
 }
 
 model Session {

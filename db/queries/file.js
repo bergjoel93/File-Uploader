@@ -8,12 +8,14 @@ const { UPLOADS_DIR } = require("../../config/storageConfig");
 class FileQuery {
   /**
    * Save a new file to the database.
-   * @param {string} name - The filename.
-   * @param {string} path - The file's storage path.
+   * @param {string} name - The filename facing the user, can be edited.
+   * @param {string} fileName - stored filename in drive or cloud storage
+   * @param {string} url - The file's storage path.
    * @param {number} folderId - The folder the file belongs to.
+   * @param {string} fileType - The type of file
    * @returns {Promise<object>} - The created file record.
    */
-  async createFile(name, fileName, url, folderId) {
+  async createFile(name, fileName, url, folderId, fileType) {
     try {
       return await prisma.file.create({
         data: {
@@ -21,6 +23,7 @@ class FileQuery {
           fileName,
           url,
           folderId,
+          fileType,
         },
       });
     } catch (error) {
@@ -152,6 +155,26 @@ class FileQuery {
     breadcrumbs.push({ name: file.name, fileId: file.id });
 
     return breadcrumbs;
+  }
+
+  // used to check if a file name exists
+  async fileNameExists(newFileName, folderId) {
+    try {
+      // 1️⃣ Check if a file with the same name exists in the specified folder
+      const existingFile = await prisma.file.findFirst({
+        where: {
+          name: newFileName,
+          folderId: folderId,
+        },
+        select: { id: true }, // Only select the ID to minimize data transfer
+      });
+
+      // 2️⃣ Return true if a file exists, otherwise false
+      return existingFile ? true : false;
+    } catch (error) {
+      console.error("Error checking file name existence:", error);
+      throw new Error("Failed to validate file name.");
+    }
   }
 }
 

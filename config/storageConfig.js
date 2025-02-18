@@ -5,15 +5,8 @@ const multer = require("multer");
 // Define the base directory for uploads
 const UPLOADS_DIR = path.join(__dirname, "../uploads");
 
-// Multer storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, UPLOADS_DIR);
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+// Store files in memory, NOT on disk immediately
+const storage = multer.memoryStorage();
 
 // Multer middleware
 const upload = multer({ storage });

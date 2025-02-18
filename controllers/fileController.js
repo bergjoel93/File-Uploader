@@ -38,7 +38,12 @@ async function deleteFile(req, res) {
     // Delete file from file system
     await fs.promises.unlink(filePath);
     console.log(`${file.name} has been deleted from storage.`);
-    return res.json({ message: "File deleted successfully" });
+    // Redirect user after successful upload
+    return res.redirect(
+      folderContents.isRoot
+        ? "/dashboard"
+        : `/dashboard/folder/${file.folderId}`
+    );
   } catch (error) {
     console.error("Error:", error);
     return res

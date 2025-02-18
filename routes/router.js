@@ -1,4 +1,7 @@
 // routes/router.js
+/**
+ * Router? I hardly know her!
+ */
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
@@ -20,9 +23,13 @@ const {
   deleteFolderHandler,
 } = require("../controllers/folderController");
 
-const { upload } = require("../config/storageConfig");
+// Validators
 const { validateRegistration } = require("../validators/registrationValidator");
 const { validateLogin } = require("../validators/loginValidation");
+const { validateFileName } = require("../validators/newFileValidator");
+
+//config
+const { upload } = require("../config/storageConfig");
 
 const {
   getFile,
