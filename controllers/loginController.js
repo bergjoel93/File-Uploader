@@ -1,5 +1,25 @@
 const passport = require("passport");
 
+function getLogin(req, res) {
+  return res.render("login", {
+    title: "login",
+    errors: [],
+    message: [],
+  });
+}
+
+function getLogout(req, res, next) {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+
+    req.session.destroy(() => {
+      return res.redirect("/login"); // Redirect to login page
+    });
+  });
+}
+
 function postLogin(req, res, next) {
   console.log("Login Attempt:", req.body); // Debug incoming request
 
@@ -25,4 +45,4 @@ function postLogin(req, res, next) {
   })(req, res, next); // This is critical to execute the Passport function
 }
 
-module.exports = { postLogin };
+module.exports = { getLogin, getLogout, postLogin };

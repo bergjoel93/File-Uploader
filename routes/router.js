@@ -7,13 +7,17 @@ const router = express.Router();
 const passport = require("passport");
 const { isAuth, isAdmin } = require("../authentication/authMiddleware");
 // Controllers
-const { getIndex, getLogout } = require("../controllers/indexController");
+const { getIndex } = require("../controllers/indexController");
 const {
   getRegister,
   postRegister,
 } = require("../controllers/registerController");
 const { getDashboard } = require("../controllers/dashboardController");
-const { postLogin } = require("../controllers/loginController");
+const {
+  getLogin,
+  getLogout,
+  postLogin,
+} = require("../controllers/loginController");
 const { getUpload, postUpload } = require("../controllers/uploadController");
 const {
   getFolder,
@@ -43,7 +47,7 @@ const {
 
 router.get("/", getIndex);
 router.get("/register", getRegister);
-router.get("/login", getIndex);
+router.get("/login", getLogin);
 router.get("/dashboard", isAuth, getDashboard);
 router.get("/logout", getLogout);
 router.get("/upload/:folderId", isAuth, getUpload);

@@ -1,20 +1,17 @@
-<!-- views/layout.ejs -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <title><%= title %></title>
   </head>
-  <body>
+  <body class="bg-gray-900 text-gray-200">
     <!-- Include Navbar -->
     <% if (navbar) { %> <%- include('./partials/navbar') %> <% } %>
 
-    <!-- Include Sidebar -->
-    <% if (sidebar) { %> <%- include('./partials/sidebar') %> <% } %>
-
     <!-- Dynamic Page Content -->
-    <main><%- include(body) %></main>
+    <main class="p-6"><%- include(body) %></main>
   </body>
 </html>

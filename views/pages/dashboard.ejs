@@ -10,10 +10,17 @@
     <% } %> <% }) %>
   </div>
 
-  <!-- Table Headers -->
-  <div class="file-header">
-    <div class="file-header-name">Name</div>
-    <div class="file-header-date">Date Made</div>
+  <!-- Container -->
+  <div id="main-container" class="max-w-5xl mx-auto mt-10 p-4">
+    <!-- Table Headers -->
+    <div
+      class="grid grid-cols-4 gap-4 px-4 py-2 text-gray-400 border-b border-gray-700 text-sm"
+      id="headers"
+    >
+      <div id="header-name">Name</div>
+      <div id="header-date">Date Made</div>
+      <div id="header-size">size</div>
+    </div>
   </div>
 
   <% if (type === "folder") { %> <%- include('folder') %> <% } %> <% if (type

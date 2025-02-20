@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/tailwind.css" />
+    <title>Login</title>
+  </head>
+  <body>
+    <% if (messages.length) { %>
+    <p class="alert success"><%= messages[0] %></p>
+    <% } %> <% if (errors.length) { %>
+    <p class="alert error"><%= errors[0] %></p>
+    <% } %>
+
+    <form action="/login" method="POST" class="login">
+      <label for="username" class="index-label">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        class="index-input"
+        required
+      />
+
+      <label for="password" class="index-label">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="index-input"
+        required
+      />
+
+      <button type="submit" class="index-submit-button">Login</button>
+    </form>
+
+    <p class="index-register-text">
+      Don't have an account?
+      <a href="/register" class="index-register-link">Register here</a>.
+    </p>
+  </body>
+</html>

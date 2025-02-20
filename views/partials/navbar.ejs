@@ -1,12 +1,30 @@
-<nav>
-  <ul>
-    <li><a href="/">Home</a></li>
+<nav
+  class="flex items-center justify-between bg-gray-800 text-white px-6 py-4 shadow-md"
+>
+  <!-- Left Side: Site Name -->
+  <div id="site-name" class="text-xl font-bold text-purple-400">
+    Simple Drive
+  </div>
+
+  <!-- Right Side: Navigation Links -->
+  <ul class="flex space-x-6">
+    <li>
+      <a href="/" class="hover:text-purple-400 transition duration-300">Home</a>
+    </li>
 
     <% if (user) { %>
-    <li><a href="/dashboard">Dashboard</a></li>
-    <li><a href="/logout">Logout</a></li>
+
+    <li>
+      <a href="/logout" class="hover:text-red-400 transition duration-300"
+        >Logout</a
+      >
+    </li>
     <% } else { %>
-    <li><a href="/login">Login</a></li>
+    <li>
+      <a href="/login" class="hover:text-purple-400 transition duration-300"
+        >Login</a
+      >
+    </li>
     <% } %>
   </ul>
 </nav>

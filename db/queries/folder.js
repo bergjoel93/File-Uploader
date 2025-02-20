@@ -46,6 +46,7 @@ class FolderQueries {
             url: true,
             folderId: true,
             createdAt: true,
+            fileType: true,
           }, // Fetch required fields
         }),
       ]);
@@ -74,6 +75,7 @@ class FolderQueries {
             folderId: file.folderId,
             type: "file",
             createdAt: file.createdAt,
+            fileType: file.fileType,
           })),
         ],
       };
@@ -160,6 +162,7 @@ class FolderQueries {
           url: true,
           folderId: true,
           createdAt: true,
+          fileType: true,
         },
       });
 
@@ -190,6 +193,7 @@ class FolderQueries {
             folderId: file.folderId,
             createdAt: file.createdAt,
             type: "file",
+            fileType: file.fileType,
           })),
         ],
       };

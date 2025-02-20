@@ -1,0 +1,106 @@
+<div
+  id="main-container"
+  class="max-w-5xl mx-auto mt-6 p-6 bg-gray-800 shadow-lg rounded-lg"
+>
+  <!-- Breadcrumbs -->
+  <div id="breadcrumbs-container" class="mb-4 text-gray-300">
+    <a href="/" class="hover:text-purple-400 transition">root</a>
+  </div>
+
+  <!-- Action Menu Centered -->
+  <div
+    id="action-menu"
+    class="flex justify-center items-center w-full border border-gray-700 rounded-lg p-3 gap-4 bg-gray-700 shadow-md"
+  >
+    <div id="add-new-folder-button">
+      <a
+        href="/newFolder/<%= folderId %>"
+        class="px-5 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg shadow-md hover:from-purple-600 hover:to-pink-600 transition"
+      >
+        ➕ Add New Folder
+      </a>
+    </div>
+    <div id="upload-file-button">
+      <a
+        href="/upload/<%= folderId %>"
+        class="px-5 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg shadow-md hover:from-purple-600 hover:to-pink-600 transition"
+      >
+        ⬆️ Upload File
+      </a>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div id="table-container" class="mt-6">
+    <!-- Table Headers -->
+    <div
+      id="table-headers"
+      class="grid grid-cols-4 gap-4 px-4 py-3 bg-gray-700 text-gray-300 border-b border-gray-600 text-sm font-semibold"
+    >
+      <div>Name</div>
+      <div>Type</div>
+      <div>Date Made</div>
+      <div>Action</div>
+    </div>
+
+    <!-- Loop through contents -->
+    <% contents.forEach(item => { %>
+    <div
+      class="grid grid-cols-4 items-center gap-4 px-4 py-4 hover:bg-gray-600 rounded transition"
+    >
+      <% if (item.type === "folder") { %>
+      <!-- Folder Row -->
+      <div class="flex items-center gap-2">
+        <span class="text-yellow-400">📁</span>
+        <a
+          href="/dashboard/folder/<%= item.id %>"
+          class="folder-link hover:text-yellow-300 transition cursor-pointer"
+        >
+          <%= item.name %>
+        </a>
+      </div>
+      <div><%= item.type %></div>
+      <div><%= new Date(item.createdAt).toLocaleDateString() %></div>
+      <div>
+        <form
+          action="/folder/delete/<%= item.id %>"
+          method="post"
+          class="inline"
+        >
+          <button
+            type="submit"
+            class="text-red-400 hover:text-red-500 transition cursor-pointer"
+          >
+            🗑️ Delete
+          </button>
+        </form>
+      </div>
+
+      <% } else { %>
+      <!-- File Row -->
+      <div class="flex items-center gap-2">
+        <span class="text-blue-400">📄</span>
+        <a
+          href="/file/<%= item.id %>"
+          class="file-link hover:text-blue-300 transition"
+        >
+          <%= item.name %>
+        </a>
+      </div>
+      <div><%= item.fileType %></div>
+      <div><%= new Date(item.createdAt).toLocaleDateString() %></div>
+      <div>
+        <form action="/file/delete/<%= item.id %>" method="post" class="inline">
+          <button
+            type="submit"
+            class="text-red-400 hover:text-red-500 transition"
+          >
+            🗑️ Delete
+          </button>
+        </form>
+      </div>
+      <% } %>
+    </div>
+    <% }); %>
+  </div>
+</div>

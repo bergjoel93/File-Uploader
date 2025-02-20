@@ -1,41 +1,59 @@
-<!-- views/pages/folder.ejs -->
-<div class="file-container">
-  <% contents.forEach(item => { %>
-  <div class="file-item">
-    <% if (item.type === "folder") { %>
-    <a href="/dashboard/folder/<%= item.id %>" class="folder-link">
-      📁 <%= item.name %>
-    </a>
-    <form
-      action="/folder/delete/<%= item.id %>"
-      method="get"
-      style="display: inline"
+<div class="max-w-5xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+  <!-- File List -->
+  <div class="space-y-4">
+    <% contents.forEach(item => { %>
+    <div
+      class="flex items-center justify-between bg-gray-700 p-4 rounded-lg shadow"
     >
-      <button type="submit">🗑️ Delete</button>
-    </form>
-    <% } else { %>
-    <a href="/file/<%= item.id %>" class="file-link"> 📄 <%= item.name %> </a>
-    <!-- Delete File Button -->
-    <form
-      action="/file/delete/<%= item.id %>"
-      method="post"
-      style="display: inline"
-    >
-      <button type="submit">🗑️ Delete</button>
-    </form>
-    <% } %>
-    <span class="file-date"
-      ><%= new Date(item.createdAt).toLocaleDateString() %></span
-    >
-  </div>
-  <% }); %>
-</div>
+      <% if (item.type === "folder") { %>
+      <a
+        href="/dashboard/folder/<%= item.id %>"
+        class="text-yellow-400 hover:text-yellow-300 transition text-lg"
+      >
+        📁 <%= item.name %>
+      </a>
+      <% } else { %>
+      <a
+        href="/file/<%= item.id %>"
+        class="text-blue-400 hover:text-blue-300 transition text-lg"
+      >
+        📄 <%= item.name %>
+      </a>
+      <% } %>
 
-<div class="add-buttons-container">
-  <div class="add-new-folder-button">
-    <a href="/newFolder/<%= folderId %>">Add New Folder</a>
+      <div class="flex items-center space-x-4">
+        <form
+          action="/<%= item.type === 'folder' ? 'folder' : 'file' %>/delete/<%= item.id %>"
+          method="post"
+        >
+          <button
+            type="submit"
+            class="text-red-400 hover:text-red-500 transition"
+          >
+            🗑️ Delete
+          </button>
+        </form>
+        <span class="text-gray-400"
+          ><%= new Date(item.createdAt).toLocaleDateString() %></span
+        >
+      </div>
+    </div>
+    <% }); %>
   </div>
-  <div class="upload-file-button">
-    <a href="/upload/<%= folderId %>">Upload File</a>
+
+  <!-- Action Buttons -->
+  <div class="mt-6 flex justify-center space-x-4">
+    <a
+      href="/newFolder/<%= folderId %>"
+      class="px-5 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg shadow-md hover:from-purple-600 hover:to-pink-600 transition"
+    >
+      ➕ Add New Folder
+    </a>
+    <a
+      href="/upload/<%= folderId %>"
+      class="px-5 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg shadow-md hover:from-purple-600 hover:to-pink-600 transition"
+    >
+      ⬆️ Upload File
+    </a>
   </div>
 </div>

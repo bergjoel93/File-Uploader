@@ -1,24 +1,46 @@
+<div class="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+  <!-- Breadcrumbs -->
+  <p class="text-gray-400 text-sm">
+    <% breadcrumbs.forEach((crumb, index) => { %> <% if (index > 0) { %>
+    <span class="text-gray-500">›</span> <% } %> <% if (crumb.folderId !== null)
+    { %>
+    <a
+      href="/dashboard/folder/<%= crumb.folderId %>"
+      class="text-purple-400 hover:text-pink-400 transition"
+    >
+      <%= crumb.name %>
+    </a>
+    <% } else { %>
+    <a href="/dashboard" class="text-purple-400 hover:text-pink-400 transition"
+      >Root</a
+    >
+    <% } %> <% }); %>
+  </p>
 
-    <p>
-      <% breadcrumbs.forEach((crumb, index) => { %>
-        <% if (index > 0) { %> › <% } %>
-        <% if (crumb.folderId !== null) { %>
-          <a href="/dashboard/folder/<%= crumb.folderId %>"><%= crumb.name %></a>
-        <% } else { %>
-          <a href="/dashboard">Root</a>
-        <% } %>
-      <% }); %>
-    </p>
-  </nav>
+  <!-- File Information -->
+  <h1 class="text-2xl font-bold text-white mt-4"><%= file.name %></h1>
+  <p class="text-gray-300 mt-2">
+    <strong>File URL:</strong>
+    <a href="<%= file.url %>" class="text-blue-400 hover:underline"
+      ><%= file.url %></a
+    >
+  </p>
+  <p class="text-gray-300"><strong>File Type:</strong> <%= file.mimeType %></p>
+  <p class="text-gray-300">
+    <strong>File Size:</strong> <%= file.fileSize %> bytes
+  </p>
 
-  <h1><%= file.name %></h1>
-  <p>File URL: <a href="<%= file.url %>"><%= file.url %></a></p>
-  <p>File Type: <%= file.mimeType %></p>
-  <p>File Size: <%= file.fileSize %> bytes</p>
-
-  <a href="/file/download/<%= file.id %>" download>
-    <button>Download File</button>
-  </a>
-
-  <a href="/dashboard">Back to Dashboard</a>
-
+  <!-- Action Buttons -->
+  <div class="mt-6 flex gap-4">
+    <a href="/file/download/<%= file.id %>" download>
+      <button
+        class="px-5 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg shadow-md hover:from-purple-600 hover:to-pink-600 transition"
+      >
+        ⬇️ Download File
+      </button>
+    </a>
+    <a href="/dashboard" class="text-gray-400 hover:text-purple-400 transition"
+      >⬅️ Back to Dashboard</a
+    >
+  </div>
+</div>

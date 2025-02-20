@@ -1,24 +1,39 @@
-<h1>Confirm Folder Deletion</h1>
+<div class="max-w-lg mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+  <h1 class="text-xl font-bold text-red-400 mb-4">Confirm Folder Deletion</h1>
 
-<p>
-  Are you sure you want to delete "<strong><%= folder.folderName %></strong>"?
-</p>
+  <p class="text-gray-300 mb-2">
+    Are you sure you want to delete "<strong class="text-white"
+      ><%= folder.folderName %></strong
+    >"?
+  </p>
+  <p class="text-gray-300 mb-4">
+    The following
+    <strong class="text-red-400"><%= folder.contents.length %></strong> item(s)
+    will be deleted if you proceed:
+  </p>
 
-<p>
-  The following <strong><%= folder.contents.length %></strong> item(s) will be
-  deleted if you proceed:
-</p>
+  <ul class="list-disc pl-6 text-gray-400">
+    <% folder.contents.forEach(item => { %>
+    <li>
+      <strong><%= item.name %></strong> (<%= item.type === "folder" ? "Folder" :
+      "File" %>)
+    </li>
+    <% }); %>
+  </ul>
 
-<ul>
-  <% folder.contents.forEach(item => { %>
-  <li>
-    <strong><%= item.name %></strong>
-    (<%= item.type === "folder" ? "Folder" : "File" %>)
-  </li>
-  <% }); %>
-</ul>
-
-<form action="/folder/delete/<%= folder.folderId %>" method="POST">
-  <button type="submit">Yes, Delete</button>
-  <a href="/dashboard/folder/<%= folderId %>">Cancel</a>
-</form>
+  <div class="mt-6 flex justify-between">
+    <form action="/folder/delete/<%= folder.folderId %>" method="POST">
+      <button
+        type="submit"
+        class="px-5 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition"
+      >
+        ⚠️ Yes, Delete
+      </button>
+    </form>
+    <a
+      href="/dashboard/folder/<%= folderId %>"
+      class="text-gray-400 hover:text-purple-400 transition"
+      >Cancel</a
+    >
+  </div>
+</div>
